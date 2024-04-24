@@ -205,6 +205,7 @@ sealed interface AtpSchemaDef {
     ): FieldType
 }
 
+
 @Serializable
 data class AtpLexicon(
     @Serializable(with = AtpLexiconDefsSerializer::class) val defs: Map<String, AtpSchemaDef.PrimaryType>,
@@ -223,6 +224,34 @@ data class AtpLexicon(
                 count++
                 if (count > 1) throw IllegalArgumentException()
             }
+        }
+    }
+
+    // enable progressive building instead of requiring all-or-nothing instantiation
+    class Builder(
+        var defs: Map<String, AtpSchemaDef.PrimaryType> = mutableMapOf(),
+        var description: String? = null,
+        var id: String? = null,
+        var lexicon: Int? = null,
+        var revision: Int? = null
+    ) {
+        companion object {
+            const val ID_CANNOT_BE_NULL = "`id` cannot be null"
+            const val LEXICON_CANNOT_BE_NULL = "`lexicon` cannot be null"
+        }
+
+        fun build(): AtpLexicon {
+            return id?.let { identifier ->
+                lexicon?.let { lex ->
+                    AtpLexicon(
+                        defs = defs,
+                        description = description,
+                        id = identifier,
+                        lexicon = lex,
+                        revision = revision
+                    )
+                } ?: throw IllegalStateException(LEXICON_CANNOT_BE_NULL)
+            } ?: throw IllegalStateException(ID_CANNOT_BE_NULL)
         }
     }
 }
