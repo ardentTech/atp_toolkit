@@ -1,3 +1,5 @@
+package atp
+
 object LexiconType {
     const val ARRAY = "array"
     const val BLOB = "blob"

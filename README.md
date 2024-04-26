@@ -2,11 +2,10 @@
 A collection of Kotlin-based tools for working with the AT Protocol from [Bluesky](https://atproto.com/specs/atp).
 
 ## TODO?
-* `AtpLexicon.Builder` - allow progressive building and delayed instantiation for UIs
-* `AtpLexicon` type-safe DSL?
+* `atp.Lexicon.Builder` - allow progressive building and delayed instantiation for UIs?
+* `atp.Lexicon` type-safe DSL?
 * E2E tests
-* Create concrete dataclass files based on lexicon JSON
-* Better `JsonBuilder` management
+* `writeLexicon` - create concrete dataclass mappings based on lexicon JSON
 
 ## Resources
 * [AT Protocol Lexicon spec](https://atproto.com/specs/lexicon)
