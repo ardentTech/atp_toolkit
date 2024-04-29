@@ -13,18 +13,19 @@ internal const val NOT_JSON_ERROR_MSG = "Remote file format must be JSON."
 class AtpToolkit(
     private val engine: HttpClientEngine = CIO.create()
 ) {
+    companion object {
+        val json by lazy {
+            Json {
+                classDiscriminator = DISCRIMINATOR_KEY
+                classDiscriminatorMode = ClassDiscriminatorMode.NONE
+                ignoreUnknownKeys = false // TODO set to `true` after validation
+                prettyPrint = true
+            }
+        }
+    }
     private val client by lazy {
         HttpClient(engine) {
             expectSuccess = true
-        }
-    }
-
-    private val json by lazy {
-        Json {
-            classDiscriminator = DISCRIMINATOR_KEY
-            classDiscriminatorMode = ClassDiscriminatorMode.NONE
-            ignoreUnknownKeys = false // TODO set to `true` after validation
-            prettyPrint = true
         }
     }
 

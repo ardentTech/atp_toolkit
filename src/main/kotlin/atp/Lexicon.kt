@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Lexicon(
-    @Serializable(with = LexiconDefsSerializer::class) val defs: Map<String, SchemaDef.PrimaryType>,
+    @Serializable(with = LexiconDefs::class) val defs: Map<String, SchemaDef.PrimaryType>,
     val description: String? = null,
     val id: String,
     val lexicon: Int,

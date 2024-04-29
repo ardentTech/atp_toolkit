@@ -2,6 +2,27 @@ package atp
 
 import kotlinx.serialization.Serializable
 
+object SchemaDefType {
+    const val ARRAY = "array"
+    const val BLOB = "blob"
+    const val BOOLEAN = "boolean"
+    const val BYTES = "bytes"
+    const val CID_LINK = "cid-link"
+    const val INTEGER = "integer"
+    const val NULL = "null"
+    const val OBJECT = "object"
+    const val PARAMS = "params"
+    const val PROCEDURE = "procedure"
+    const val QUERY = "query"
+    const val RECORD = "record"
+    const val REF = "ref"
+    const val STRING = "string"
+    const val SUBSCRIPTION = "subscription"
+    const val TOKEN = "token"
+    const val UNION = "union"
+    const val UNKNOWN = "unknown"
+}
+
 @Serializable
 sealed interface SchemaDef {
     val description: kotlin.String?
@@ -17,7 +38,7 @@ sealed interface SchemaDef {
     @Serializable
     data class Array(
         override val description: kotlin.String? = null,
-        @Serializable(with = FieldTypeSerializer::class) val items: FieldType,
+        @Serializable(with = atp.FieldType::class) val items: FieldType,
         val maxLength: Int? = null,
         val minLength: Int? = null,
         override val type: kotlin.String
@@ -81,7 +102,7 @@ sealed interface SchemaDef {
     data class Object(
         override val description: kotlin.String? = null,
         val nullable: List<kotlin.String>? = null,
-        @Serializable(with = ObjectPropertiesSerializer::class) val properties: Map<kotlin.String, SchemaDef>,
+        @Serializable(with = ObjectProperties::class) val properties: Map<kotlin.String, SchemaDef>,
         val required: List<kotlin.String>? = null,
         override val type: kotlin.String
     ): FieldType, PrimaryType, IO.Schema
@@ -90,7 +111,7 @@ sealed interface SchemaDef {
     @Serializable
     data class Params(
         override val description: kotlin.String? = null,
-        @Serializable(with = ParamsPropertiesSerializer::class) val properties: Map<kotlin.String, SchemaDef>,
+        @Serializable(with = ParamsProperties::class) val properties: Map<kotlin.String, SchemaDef>,
         val required: List<kotlin.String>? = null,
         override val type: kotlin.String
     ): FieldType
@@ -131,7 +152,7 @@ sealed interface SchemaDef {
         override val description: kotlin.String? = null,
         val ref: kotlin.String,
         override val type: kotlin.String
-    ): FieldType
+    ): FieldType, IO.Schema
 
     // https://atproto.com/specs/lexicon#string
     @Serializable
@@ -179,7 +200,7 @@ sealed interface SchemaDef {
         override val description: kotlin.String? = null,
         val refs: List<kotlin.String>,
         override val type: kotlin.String
-    ): FieldType
+    ): FieldType, IO.Schema
 
     // https://atproto.com/specs/lexicon#unknown
     @Serializable

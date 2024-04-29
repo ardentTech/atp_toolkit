@@ -8,7 +8,7 @@ import kotlinx.serialization.json.JsonTransformingSerializer
 import kotlinx.serialization.json.jsonPrimitive
 import kotlin.reflect.KClass
 
-internal const val SERIALIZER_PREFIX = "data.SchemaDef"
+internal const val SERIALIZER_PREFIX = "atp.SchemaDef"
 internal const val TYPE_KEY = "type"
 
 typealias JsonMap = MutableMap<String, JsonElement>
@@ -25,24 +25,24 @@ internal abstract class BaseSerializer<T: Any>(tSerializer: KSerializer<T>): Jso
     }
 
     fun getSerializerCls(type: String): KClass<out SchemaDef> = when (type) {
-        LexiconType.ARRAY -> SchemaDef.Array::class
-        LexiconType.BLOB -> SchemaDef.Blob::class
-        LexiconType.BOOLEAN -> SchemaDef.Boolean::class
-        LexiconType.BYTES -> SchemaDef.Bytes::class
-        LexiconType.CID_LINK -> SchemaDef.CidLink::class
-        LexiconType.INTEGER -> SchemaDef.Integer::class
-        LexiconType.NULL -> SchemaDef.Null::class
-        LexiconType.OBJECT -> SchemaDef.Object::class
-        LexiconType.PARAMS -> SchemaDef.Params::class
-        LexiconType.PROCEDURE -> SchemaDef.Procedure::class
-        LexiconType.QUERY -> SchemaDef.Query::class
-        LexiconType.RECORD -> SchemaDef.Record::class
-        LexiconType.REF -> SchemaDef.Ref::class
-        LexiconType.STRING -> SchemaDef.String::class
-        LexiconType.SUBSCRIPTION -> SchemaDef.Subscription::class
-        LexiconType.TOKEN -> SchemaDef.Token::class
-        LexiconType.UNION -> SchemaDef.Union::class
-        LexiconType.UNKNOWN -> SchemaDef.Unknown::class
+        SchemaDefType.ARRAY -> SchemaDef.Array::class
+        SchemaDefType.BLOB -> SchemaDef.Blob::class
+        SchemaDefType.BOOLEAN -> SchemaDef.Boolean::class
+        SchemaDefType.BYTES -> SchemaDef.Bytes::class
+        SchemaDefType.CID_LINK -> SchemaDef.CidLink::class
+        SchemaDefType.INTEGER -> SchemaDef.Integer::class
+        SchemaDefType.NULL -> SchemaDef.Null::class
+        SchemaDefType.OBJECT -> SchemaDef.Object::class
+        SchemaDefType.PARAMS -> SchemaDef.Params::class
+        SchemaDefType.PROCEDURE -> SchemaDef.Procedure::class
+        SchemaDefType.QUERY -> SchemaDef.Query::class
+        SchemaDefType.RECORD -> SchemaDef.Record::class
+        SchemaDefType.REF -> SchemaDef.Ref::class
+        SchemaDefType.STRING -> SchemaDef.String::class
+        SchemaDefType.SUBSCRIPTION -> SchemaDef.Subscription::class
+        SchemaDefType.TOKEN -> SchemaDef.Token::class
+        SchemaDefType.UNION -> SchemaDef.Union::class
+        SchemaDefType.UNKNOWN -> SchemaDef.Unknown::class
         else -> throw IllegalArgumentException("Unmapped type: $type")
     }
 

@@ -11,13 +11,13 @@ class BaseSerializerTest {
 
     @Test
     fun `addDiscriminator ok`() {
-        val type = LexiconType.INTEGER
+        val type = SchemaDefType.INTEGER
         val map: JsonMap = mutableMapOf("type" to JsonPrimitive(type))
         val serializer = object: BaseSerializer<String>(String.serializer()) {
             override val validTypes = listOf(type)
         }
         serializer.addDiscriminator(map)
-        assertEquals("data.SchemaDef.Integer", (map[DISCRIMINATOR_KEY] as JsonPrimitive).content)
+        assertEquals("atp.SchemaDef.Integer", (map[DISCRIMINATOR_KEY] as JsonPrimitive).content)
     }
 
     @Test
@@ -31,7 +31,7 @@ class BaseSerializerTest {
     @Test
     fun `getSerializerCls ok`() {
         val serializer = object: BaseSerializer<String>(String.serializer()) {}
-        val cls = serializer.getSerializerCls(LexiconType.BOOLEAN)
+        val cls = serializer.getSerializerCls(SchemaDefType.BOOLEAN)
         assertEquals(SchemaDef.Boolean::class, cls)
     }
 
@@ -46,7 +46,7 @@ class BaseSerializerTest {
     @Test
     fun `getType ok`() {
         val serializer = object: BaseSerializer<String>(String.serializer()) {}
-        val type = LexiconType.BOOLEAN
+        val type = SchemaDefType.BOOLEAN
         val res = serializer.getType(mutableMapOf(TYPE_KEY to JsonPrimitive(type)))
         assertEquals(type, res)
     }
@@ -56,7 +56,7 @@ class BaseSerializerTest {
         val map: JsonMap = mutableMapOf()
         val serializer = object: BaseSerializer<String>(String.serializer()) {}
         serializer.setDiscriminator(map, SchemaDef.Boolean::class)
-        assertEquals("data.SchemaDef.Boolean", (map[DISCRIMINATOR_KEY] as JsonPrimitive).content)
+        assertEquals("atp.SchemaDef.Boolean", (map[DISCRIMINATOR_KEY] as JsonPrimitive).content)
     }
 
     @Test
@@ -64,7 +64,7 @@ class BaseSerializerTest {
         val serializer = object: BaseSerializer<String>(String.serializer()) {
             override val validTypes = null
         }
-        serializer.validateType(LexiconType.STRING)
+        serializer.validateType(SchemaDefType.STRING)
     }
 
     @Test
@@ -73,7 +73,7 @@ class BaseSerializerTest {
             val serializer = object: BaseSerializer<String>(String.serializer()) {
                 override val validTypes = emptyList<String>()
             }
-            serializer.validateType(LexiconType.STRING)
+            serializer.validateType(SchemaDefType.STRING)
         }
     }
 
@@ -81,17 +81,17 @@ class BaseSerializerTest {
     fun `validateType, validTypes populated, type invalid`() {
         assertFailsWith<IllegalArgumentException> {
             val serializer = object: BaseSerializer<String>(String.serializer()) {
-                override val validTypes = listOf(LexiconType.BOOLEAN)
+                override val validTypes = listOf(SchemaDefType.BOOLEAN)
             }
-            serializer.validateType(LexiconType.STRING)
+            serializer.validateType(SchemaDefType.STRING)
         }
     }
 
     @Test
     fun `validateType, validTypes populated, type valid`() {
         val serializer = object: BaseSerializer<String>(String.serializer()) {
-            override val validTypes = listOf(LexiconType.STRING)
+            override val validTypes = listOf(SchemaDefType.STRING)
         }
-        serializer.validateType(LexiconType.STRING)
+        serializer.validateType(SchemaDefType.STRING)
     }
 }
