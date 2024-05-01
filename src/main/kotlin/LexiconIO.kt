@@ -5,6 +5,9 @@ import io.ktor.client.statement.*
 import kotlinx.serialization.json.Json
 import java.io.File
 
+internal const val JSON_SUFFIX = ".json"
+internal const val NOT_JSON_ERROR_MSG = "Remote file format must be JSON."
+
 internal object LexiconIO {
     fun read(file: File, json: Json): Lexicon =
         json.decodeFromString(

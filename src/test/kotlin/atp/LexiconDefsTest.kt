@@ -1,6 +1,6 @@
 package atp
 
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 import kotlin.test.assertFails
 
 class LexiconDefsTest {

@@ -1,7 +1,7 @@
 package atp
 
 import AtpToolkit
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 import kotlin.test.assertFails
 
 class ParamsPropertiesTest {

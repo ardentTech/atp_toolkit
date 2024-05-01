@@ -2,29 +2,26 @@ import atp.Lexicon
 import io.ktor.client.*
 import io.ktor.client.engine.*
 import io.ktor.client.engine.cio.*
+import io.ktor.client.plugins.*
 import kotlinx.serialization.json.ClassDiscriminatorMode
 import kotlinx.serialization.json.Json
 import java.io.File
 
 internal const val DISCRIMINATOR_KEY = "discriminator"
-internal const val JSON_SUFFIX = ".json"
-internal const val NOT_JSON_ERROR_MSG = "Remote file format must be JSON."
 
-class AtpToolkit(
-    private val engine: HttpClientEngine = CIO.create()
-) {
+class AtpToolkit {
     companion object {
-        val json by lazy {
+        internal val json by lazy {
             Json {
                 classDiscriminator = DISCRIMINATOR_KEY
                 classDiscriminatorMode = ClassDiscriminatorMode.NONE
-                ignoreUnknownKeys = false // TODO set to `true` after validation
-                prettyPrint = true
+                ignoreUnknownKeys = false
             }
         }
     }
+
     private val client by lazy {
-        HttpClient(engine) {
+        HttpClient( CIO) {
             expectSuccess = true
         }
     }
@@ -40,7 +37,11 @@ class AtpToolkit(
         try {
             Result.success(LexiconIO.read(client, json, url))
         } catch (e: Exception) {
-            // TODO map non-200s to avoid leaking Ktor exception details
-            Result.failure(e)
+            Result.failure(when (e) {
+                is RedirectResponseException -> AtpToolkitRedirectError(e.message)
+                is ClientRequestException -> AtpToolkitClientError(e.message)
+                is ServerResponseException -> AtpToolkitServerError(e.message)
+                else -> AtpToolkitUnexpectedError(e.message)
+            })
         }
 }

@@ -13,7 +13,6 @@ internal const val TYPE_KEY = "type"
 
 typealias JsonMap = MutableMap<String, JsonElement>
 
-// TODO could restrict this
 internal abstract class BaseSerializer<T: Any>(tSerializer: KSerializer<T>): JsonTransformingSerializer<T>(tSerializer) {
 
     open val validTypes: List<String>? = null
