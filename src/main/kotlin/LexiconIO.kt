@@ -14,6 +14,8 @@ internal object LexiconIO {
             file.inputStream().bufferedReader().use { it.readText() }
         )
 
+    internal fun read(input: String, json: Json): Lexicon = json.decodeFromString(input)
+
     suspend fun read(client: HttpClient, json: Json, url: String): Lexicon {
         if (!url.endsWith(JSON_SUFFIX)) { throw IllegalArgumentException(NOT_JSON_ERROR_MSG) }
         return json.decodeFromString(client.get(url).bodyAsText())
